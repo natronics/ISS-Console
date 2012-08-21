@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+import gui.views
+import gui.framework
+import data.models
+import data.nasa
+import threading
+import time
+
+class ISSConsole:
+
+  def __init__(self):
+  
+    self.app    = gui.framework.Application()
+    self.state  = data.models.ISSData()
+    self.api    = data.nasa.ISSLive(['statex','statey','statez'])
+    
+    self.view  = gui.views.MainWindow(self, self.state)
+    self.app.main = self.view
+    
+    clock = threading.Thread(target=self.run_api)
+    clock.daemon = True
+    clock.start()
+    
+  def run_api(self):
+    self.api.start(self.handle_data)
+
+  def handle_data(self, data):
+    self.state.j2000_pos[0] = float(data['statex'])
+    self.state.j2000_pos[1] = float(data['statey'])
+    self.state.j2000_pos[2] = float(data['statez'])
+    self.view.update_view_threadsafe()
+
+  def start(self):
+    self.app.run()
+
+if __name__ == "__main__":
+  ISSConsole().start()
