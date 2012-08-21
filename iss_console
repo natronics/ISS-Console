@@ -6,32 +6,56 @@ import data.nasa
 import threading
 import time
 
+fetch = ['statex','statey','statez','statevx','statevy','statevz','statetime'
+        ,'ku1status','vid1source']
+
 class ISSConsole:
 
   def __init__(self):
   
     self.app    = gui.framework.Application()
     self.state  = data.models.ISSData()
-    self.api    = data.nasa.ISSLive(['statex','statey','statez'])
+    self.api    = data.nasa.ISSLive(fetch, True)
     
     self.view  = gui.views.MainWindow(self, self.state)
     self.app.main = self.view
     
-    clock = threading.Thread(target=self.run_api)
-    clock.daemon = True
-    clock.start()
-    
   def run_api(self):
     self.api.start(self.handle_data)
 
-  def handle_data(self, data):
-    self.state.j2000_pos[0] = float(data['statex'])
-    self.state.j2000_pos[1] = float(data['statey'])
-    self.state.j2000_pos[2] = float(data['statez'])
+  def fake_api(self):
+    self.state.j2000_pos = [5426.331231,-4521.124543,0.1]
+    self.state.j2000_vel = [-7214.331231,-4521.124543,-1234.567]
+    self.state.state_time = "11916/06:41:50"
+    self.state.ku1_status = "DISABLED"
+    self.state.ku1_source = "Some Camera"
     self.view.update_view_threadsafe()
 
-  def start(self):
+  def handle_data(self, d):
+    #print d
+    self.state.j2000_pos[0] = float(d['statex'])
+    self.state.j2000_pos[1] = float(d['statey'])
+    self.state.j2000_pos[2] = float(d['statez'])
+    self.state.j2000_vel[0] = float(d['statevx'])
+    self.state.j2000_vel[1] = float(d['statevy'])
+    self.state.j2000_vel[2] = float(d['statevz'])
+    self.state.state_time = d['statetime']
+    self.state.ku1_status = d['ku1status']
+    self.state.ku1_source = data.nasa.JARGON[d['vid1source']]
+    
+    
+    self.view.update_view_threadsafe()
+
+  def start(self, dev=False):
+    if dev:
+      api_thread = threading.Thread(target=self.fake_api)
+    else:
+      api_thread = threading.Thread(target=self.run_api)
+      
+    api_thread.daemon = True
+    api_thread.start()
     self.app.run()
 
 if __name__ == "__main__":
-  ISSConsole().start()
+  ISSConsole().start(dev=True)
+  #ISSConsole().start()
