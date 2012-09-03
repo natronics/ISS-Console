@@ -35,7 +35,72 @@ ISS_KEY = {   'statex': {'name': "J2000 State Vector - X (km)", 'key': "USLAB000
             #, '': {'name': "", 'key': ""}
           }
 
-JARGON = {'S1LOOB': "S1 Lower Outboard Camera"}
+JARGON =  {   'S3AFT':      "S3 Aft"
+            , 'S1UPOB':     "S1 Upper Outboard"
+            , 'S1LOOB':     "S1 Lower Outboard"
+            , 'S1UPIB':     "S1 Upper Inboard"
+            , 'S1LOIB':     "S1 Lower Inboard"
+            , 'P1UPIB':     "P1 Upper Inboard"
+            , 'P1LOIB':     "P1 Lower Inboard"
+            , 'P1UPOB':     "P1 Upper Outboard"
+            , 'P1LOOB':     "P1 Lower Outboard"
+            , 'P3AFT':      "P3 Aft"
+            , 'NOD2LO':     "Node 2 Nadir"
+            , 'NOD1UP':     "Node 1 Zenith"
+            , 'LABS':       "Lab Starboard"
+            , 'NOD3S':      "Node 3 Starboard/Forward"
+            , 'BLEE':       "SSRMS Base LEE"
+            , 'BELB':       "SSRMS Base Elbow"
+            , 'TELB':       "SSRMS Tip Elbow"
+            , 'TLEE':       "SSRMS Tip LEE"
+            , 'POA':        "MBS POA"
+            , 'MBS CLPA':   "MBS CLPA LAUNCH"
+            , 'MAST':       "MBS CLPA"
+            , 'SPDMS1':     "SPDM Spare"
+            , 'SPDMS2':     "SPDM Spare"
+            , 'SPDMLEE':    "SPDM LEE"
+            , 'OTCM1':      "SPDM Arm 1 OTCM"
+            , 'BODY1':      "SPDM Body Camera 1"
+            , 'OTCM2':      "SPDM Arm 2 OTCM"
+            , 'BODY2':      "SPDM Body Camera 2"
+            , 'SSRMS PL1':  "MSS Payload Camera 1"
+            , 'SSRMS PL2':  "MSS Payload Camera 2"
+            , 'SSRMS PL3':  "MSS Payload Camera 3"
+            , 'MSS PL1':    "MSS Payload Camera 4"
+            , 'MSS PL2':    "MSS Payload Camera 5"
+            , 'JPM a':      "JEM Channel 1"
+            , 'JPM b':      "JEM Channel 2"
+            , 'COL 1':      "APM Channel 1"
+            , 'COL 2':      "APM Channel 2"
+            , 'ORB1':       "Orbiter Channel 1"
+            , 'ORB2':       "Orbiter Channel 2"
+            , 'Lab AVU1':   "AVU1 Channel A"
+            , 'Lab AVU2':   "AVU1 Channel B"
+            , 'CUP AVU1':   "AVU2 Channel A"
+            , 'CUP AVU2':   "AVU2 Channel B"
+            , 'VTR1':       "VTR1 PLAYBACK"
+            , 'VTR2':       "VTR2 PLAYBACK"
+            , 'SCU1':       "SCU 1 MUX Output"
+            , 'SCU2':       "SCU 2 MUX Output"
+            , 'SCU1 Test':  "SCU 1 Test Pattern"
+            , 'SCU2 Test':  "SCU 2 Test Pattern"
+            , 'LABCAM':     "LAB Camcorder"
+            , 'A/L CAM':    "Airlock Camcorder"
+            , 'N1 CAM':     "Node 1 Camcorder"
+            , 'N3 CAM':     "Node 3 Camcorder"
+            , 'LAB1D3':     "ISPR LAB1D3"
+            , 'LAB1P2':     "ISPR LAB1P2"
+            , 'LAB1P4':     "ISPR LAB1P4"
+            , 'LAB105':     "ISPR LAB1O5"
+            , 'LAB104':     "ISPR LAB1O4"
+            , 'LAB103':     "ISPR LAB1O3"
+            , 'LAB102':     "ISPR LAB1O2"
+            , 'LAB101':     "ISPR LAB1O1"
+            , 'LAB1S1':     "ISPR LAB1S1"
+            , 'LAB1S2':     "ISPR LAB1S2"
+            , 'LAB1S3':     "ISPR LAB1S3"
+            , 'LAB1S4':     "ISPR LAB1S4"
+          }
 
 class ISSLive():
   """A class to get real time data from the space station"""
@@ -68,7 +133,8 @@ class ISSLive():
               if rawdata["Name"] == ISS_KEY[key]['key']:
                 ret[key] = rawdata["CalibratedData"]
                 if self.verbose:
-                  print key, rawdata
+                  #print key, rawdata
+                  pass
                 break
           except:
             pass
